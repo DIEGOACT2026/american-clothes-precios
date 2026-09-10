@@ -230,12 +230,18 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             return parametros.margen3;
         }
 
-        function redondear(precio) {
-            const decimal = precio % 1;
-            const entero = Math.floor(precio);
-            if (decimal < 0.245 || decimal < 0.745) return entero + 0.49;
-            return entero + 0.99;
-        }
+       function redondear(precio) {
+    const redondeo = Math.round(precio);
+    const dosUltimos = redondeo % 100;
+    const sinUltimos = Math.floor(redondeo / 100) * 100;
+    const dist49 = Math.abs(dosUltimos - 49);
+    const dist99 = Math.abs(dosUltimos - 99);
+    if (dist49 <= dist99) {
+        return sinUltimos + 49;
+    } else {
+        return sinUltimos + 99;
+    }
+}
 
         function calcularPrecio() {
             const usd = parseFloat(document.getElementById('precioUSD').value);
